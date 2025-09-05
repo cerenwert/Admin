@@ -1,0 +1,72 @@
+﻿# Proje Durumu
+
+## Repository Bilgisi
+- **Repo linki:** https://github.com/<org>/<repo>
+- **Son commit:** 2d6793277bac12cc7a24f0bce143c2c867046343  docs: add setup, run, errors & reproduction to README
+- **Son commit saati (Europe/Istanbul):** %Y->- (HEAD -> master) 2d6793277bac12cc7a24f0bce143c2c867046343:%M
+
+## Kurulum
+- Python 3.13 ve PowerShell ile test edildi.
+- Windows'ta venv aktivasyonu için gerekirse geçici izin:
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+\\\powershell
+cd C:\Users\victus\OneDrive\Masaüstü\admin
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt   # varsa
+pip install celery djangorestframework
+\\\
+
+## Çalıştırma
+\\\powershell
+cd C:\Users\victus\OneDrive\Masaüstü\admin
+.\.venv\Scripts\activate
+python manage.py runserver 127.0.0.1:8000
+\\\
+
+- Admin: http://127.0.0.1:8000/admin/
+- Geçici health/metrics: http://127.0.0.1:8000/metrics/summary/
+
+## Neden /admin/metrics/summary/ (ve public /metrics/summary/)?
+- Hızlı sağlık/durum kontrolü, operasyonel görünürlük, hata ayıklama.
+- İlerde Prometheus/Grafana gibi araçlara veri çıkarmak için sabit uç.
+- Canlıda sadece yetkili kullanıcılara açık olacak (şimdilik public uç test için açık).
+
+## Karşılaşılan Hatalar ve Tekrar Üretme
+**1) Komut satırı kopyalama**
+- Hata: Unexpected token 'PS' in expression or statement.
+- Üretme: Promptla birlikte komutu yapıştırmak.
+- Çözüm: Sadece komutu yaz.
+
+**2) Eksik bağımlılık (Celery)**
+- Hata: ModuleNotFoundError: No module named 'celery' (config/celery.py)
+- Üretme: Celery kurulmadan Django komutları.
+- Çözüm: pip install celery (tercihen pip install -r requirements.txt).
+
+**3) PowerShell script izni (venv)**
+- Hata: Activate.ps1 cannot be loaded because running scripts is disabled...
+- Üretme: Execution Policy düşükken venv aktivasyonu.
+- Çözüm: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass veya CurrentUser/RemoteSigned.
+
+**4) Sunucuya bağlanılamıyor**
+- Hata: Invoke-WebRequest : Uzak sunucuya bağlanılamıyor / TcpTestSucceeded: False
+- Üretme: Runserver kapalıyken istek atmak.
+- Çözüm: python manage.py runserver 127.0.0.1:8000 açık pencere, testler ikinci pencereden.
+
+**5) Kök URL 404**
+- Log: Not Found: / ve "GET / HTTP/1.1" 404
+- Üretme: / için view yokken anasayfa.
+- Çözüm: Kök URLyi admine yönlendirme veya basit home view.
+
+**6) Admin altında metrik erişimi login istiyor**
+- Davranış: /admin/metrics/summary/ logine yönlendirir.
+- Üretme: Admin path + staff gerekli.
+- Çözüm: Test için /metrics/summary/ public; canlıda tekrar staff-only.
+
+## Şu Anki Durum
+- Venv aktif, bağımlılıklar (Celery + DRF) yüklü.
+- Geliştirme sunucusu lokal çalışıyor.
+- contracts içinde metrics_summary mevcut (public path).
+- DRF ile API uçları (models/offers) için zemin hazır.
+
