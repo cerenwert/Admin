@@ -1,0 +1,10 @@
+﻿Django>=5
+djangorestframework
+celery[redis]
+redis
+django-celery-beat
+twilio
+psycopg2-binary
+python-dotenv
+djangorestframework-simplejwt
+gunicorn
