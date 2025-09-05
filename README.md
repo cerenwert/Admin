@@ -34,32 +34,28 @@ python manage.py runserver 127.0.0.1:8000
 - Canlıda sadece yetkili kullanıcılara açık olacak (şimdilik public uç test için açık).
 
 ## Karşılaşılan Hatalar ve Tekrar Üretme
-**1) Komut satırı kopyalama**
-- Hata: Unexpected token 'PS' in expression or statement.
-- Üretme: Promptla birlikte komutu yapıştırmak.
-- Çözüm: Sadece komutu yaz.
 
-**2) Eksik bağımlılık (Celery)**
+**1) Eksik bağımlılık (Celery)**
 - Hata: ModuleNotFoundError: No module named 'celery' (config/celery.py)
 - Üretme: Celery kurulmadan Django komutları.
 - Çözüm: pip install celery (tercihen pip install -r requirements.txt).
 
-**3) PowerShell script izni (venv)**
+**2) PowerShell script izni (venv)**
 - Hata: Activate.ps1 cannot be loaded because running scripts is disabled...
 - Üretme: Execution Policy düşükken venv aktivasyonu.
 - Çözüm: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass veya CurrentUser/RemoteSigned.
 
-**4) Sunucuya bağlanılamıyor**
+**3) Sunucuya bağlanılamıyor**
 - Hata: Invoke-WebRequest : Uzak sunucuya bağlanılamıyor / TcpTestSucceeded: False
 - Üretme: Runserver kapalıyken istek atmak.
 - Çözüm: python manage.py runserver 127.0.0.1:8000 açık pencere, testler ikinci pencereden.
 
-**5) Kök URL 404**
+**4) Kök URL 404**
 - Log: Not Found: / ve "GET / HTTP/1.1" 404
 - Üretme: / için view yokken anasayfa.
 - Çözüm: Kök URLyi admine yönlendirme veya basit home view.
 
-**6) Admin altında metrik erişimi login istiyor**
+**5) Admin altında metrik erişimi login istiyor**
 - Davranış: /admin/metrics/summary/ logine yönlendirir.
 - Üretme: Admin path + staff gerekli.
 - Çözüm: Test için /metrics/summary/ public; canlıda tekrar staff-only.
