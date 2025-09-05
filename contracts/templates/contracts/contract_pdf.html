@@ -1,0 +1,54 @@
+﻿<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <title>Sözleşme - {{ contract.id }}</title>
+  <link rel="stylesheet" href="{{ static('pdf/pdf.css') }}">
+  <style>
+    @page { size: A4; margin: 20mm 15mm; }
+    body { font-family: "DejaVu Sans", Arial, sans-serif; font-size: 12px; color:#111; }
+    h1,h2,h3 { margin: 0 0 8px; }
+    .muted{ color:#666; }
+    .row{ display:flex; justify-content:space-between; }
+    .box{ border:1px solid #ddd; padding:10px; border-radius:6px; margin:8px 0; }
+    table{ width:100%; border-collapse:collapse; margin-top:6px; }
+    th,td{ border:1px solid #ddd; padding:6px; text-align:left; vertical-align:top; }
+    .small{ font-size:11px; }
+    .right{ text-align:right; }
+    .sig { height:60px; border-top:1px solid #aaa; margin-top:40px; }
+  </style>
+</head>
+<body>
+  <h1>Hizmet Sözleşmesi</h1>
+  <p class="muted">Sözleşme No: {{ contract.id }}  Tarih: {{ now|date:"d.m.Y" }}</p>
+
+  <div class="box">
+    <div class="row">
+      <div style="width:48%">
+        <h3>Firma</h3>
+        <div><strong>{{ contract.company.name }}</strong></div>
+        {% if contract.company.address %}<div>Adres: {{ contract.company.address }}</div>{% endif %}
+      </div>
+      <div style="width:48%">
+        <h3>Model</h3>
+        <div><strong>{{ contract.model.full_name }}</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <th>Başlangıç</th><th>Bitiş</th><th>Süre (gün)</th><th>Tutar (TRY)</th><th>Durum</th>
+    </tr>
+    <tr>
+      <td>{{ contract.start_date|date:"d.m.Y" }}</td>
+      <td>{{ contract.end_date|date:"d.m.Y" }}</td>
+      <td>{{ contract.duration_days }}</td>
+      <td class="right">{{ contract.price|floatformat:2 }}</td>
+      <td>{{ contract.status }}</td>
+    </tr>
+  </table>
+
+  <p class="muted small">Otomatik üretilmiştir. {{ now|date:"d.m.Y H:i" }}</p>
+</body>
+</html>

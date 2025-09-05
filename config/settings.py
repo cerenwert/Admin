@@ -8,9 +8,9 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
-    "django.contrib.admin","django.contrib.auth","django.contrib.contenttypes",
+    'rest_framework',
+"django.contrib.admin","django.contrib.auth","django.contrib.contenttypes",
     "django.contrib.sessions","django.contrib.messages","django.contrib.staticfiles",
-    "rest_framework",
     "django_celery_beat",
     "contracts",
 ]
@@ -75,3 +75,15 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [],
     "DEFAULT_PERMISSION_CLASSES": [],
 }
+
+
+
+
+# Email (TEST: console backend)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@example.com'
+
+
+# Email (TEST)\nEMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'\nDEFAULT_FROM_EMAIL='noreply@example.com'\n
+
+# Celery\nCELERY_BROKER_URL='redis://127.0.0.1:6379/0'\nCELERY_RESULT_BACKEND='redis://127.0.0.1:6379/1'\nCELERY_TIMEZONE='Europe/Istanbul'\nINSTALLED_APPS += ['django_celery_beat']\n

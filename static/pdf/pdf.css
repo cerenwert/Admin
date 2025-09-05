@@ -1,0 +1,2 @@
+﻿/* Yazıcı dostu ufak ayarlar */
+table tr:nth-child(even){background:#fafafa;}
