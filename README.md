@@ -67,3 +67,41 @@ python manage.py runserver 127.0.0.1:8000
 - DRF ile API uçları (models/offers) için zemin hazır.
 
 
+## 5 Eylül 2025 – Yeni Hatalar ve Çözümler
+
+**6) Admin panelinde `pdf_generated_at` alanı bulunamadı**
+- Hata: `(admin.E108) The value of 'list_display[6]' refers to 'pdf_generated_at'`
+- Üretme: Contract modelinde alan tanımlı değilken admin list_display içinde kullanmak.
+- Çözüm: `Contract` modeline `pdf_generated_at` alanı eklendi, migration yapıldı.
+
+**7) Eksik `contracts.utils` modülü**
+- Hata: `ModuleNotFoundError: No module named 'contracts.utils'`
+- Üretme: utils.py oluşturulmamışken import etmek.
+- Çözüm: `contracts/utils.py` dosyası eklendi, HTML→PDF fonksiyonları tanımlandı.
+
+**8) `reportlab` / `xhtml2pdf` sürüm çakışması**
+- Hata: `ResolutionImpossible` hatası, sürümler uyumsuz.
+- Üretme: `reportlab==3.6.13` ile `xhtml2pdf==0.2.15` aynı anda kurulmaya çalışıldığında.
+- Çözüm: `pip install "reportlab>=4.0.4,<4.1" "xhtml2pdf==0.2.15"` ile uyumlu kurulum yapıldı.
+
+**9) WeasyPrint kütüphane hatası**
+- Hata: `OSError: cannot load library 'gobject-2.0-0'`
+- Üretme: Windows’ta gerekli GTK kütüphaneleri olmadan WeasyPrint çalıştırıldığında.
+- Çözüm: WeasyPrint yerine `xhtml2pdf` kullanılarak PDF üretim sağlandı.
+
+**10) `remind_expiring_contracts` komutunda eksik import**
+- Hata: `ModuleNotFoundError: No module named 'contracts.reminders'`
+- Üretme: reminders.py olmadan komutu çalıştırmak.
+- Çözüm: `contracts/reminders.py` eklendi, komut başarıyla çalıştı.
+
+## Şu Anki Son Durum – 5 Eylül 2025
+
+- Teklif onaylandığında otomatik sözleşme oluşturma çalışıyor.  
+- Teklif ve sözleşmeler için PDF üretim altyapısı hazır, HTML şablon + CSS üzerinden PDF çıktısı alınabiliyor.  
+- Admin paneline sözleşme alanları (kalan gün, auto_renew, hizmet adı vb.) eklendi.  
+- Hatırlatma ve yenileme için komutlar (`remind_expiring_contracts`, `update_contract_statuses`, `propose_renewals`) başarıyla çalışıyor.  
+- “Hatırlatmaları Çalıştır” butonu admin panelinde mevcut.  
+- E-posta altyapısı şu anda **console backend** ile test modunda; SMTP ayarı eklenirse gerçek müşterilere gönderilebilecek.  
+- Celery/Redis kurulumu yapılmadı, fakat Windows Task Scheduler ile komutlar zamanlanarak çalıştırılabilecek.  
+- GitHub’a tüm değişiklikler aktarıldı (branch: `main`), repo yapısı sadeleştirildi.  
+
