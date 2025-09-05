@@ -3,7 +3,7 @@
 ## Repository Bilgisi
 - **Repo linki:** https://github.com/<org>/<repo>
 - **Son commit:** 2d6793277bac12cc7a24f0bce143c2c867046343  docs: add setup, run, errors & reproduction to README
-- **Son commit saati (Europe/Istanbul):** %Y->- (HEAD -> master) 2d6793277bac12cc7a24f0bce143c2c867046343:%M
+- **Son commit saati (Europe/Istanbul): 2025-09-05 13:29
 
 ## Kurulum
 - Python 3.13 ve PowerShell ile test edildi.
@@ -65,4 +65,5 @@ python manage.py runserver 127.0.0.1:8000
 - Geliştirme sunucusu lokal çalışıyor.
 - contracts içinde metrics_summary mevcut (public path).
 - DRF ile API uçları (models/offers) için zemin hazır.
+
 
